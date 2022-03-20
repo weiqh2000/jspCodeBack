@@ -1,0 +1,16 @@
+package com.lcvc.ebuy.bean;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class Mysql {
+	
+	private String adminBeanlogin;
+	private String adminBeanGetAdmin;
+	private String adminBeanGetAdmins;
+	private String adminBeanDeleteAamin;
+	
+	public String 
+	
+	
+}

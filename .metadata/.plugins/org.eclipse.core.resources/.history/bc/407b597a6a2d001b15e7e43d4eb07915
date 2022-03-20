@@ -1,0 +1,45 @@
+package com.lcvc.ebuy.test.junit;
+
+import java.util.List;
+
+import org.junit.Test;
+
+import com.lcvc.ebuy.bean.AdminBean;
+import com.lcvc.ebuy.model.Admin;
+
+public class AdminBenTest {
+     private AdminBean adminBean=new AdminBean();
+     
+     //@Test
+     public void testLogin(){
+    	 System.out.println(adminBean.login("user1","123"));//姝ゅ搴旇杈撳嚭true
+    	 System.out.println(adminBean.login("user1", "324"));//姝ゅ搴旇杈撳嚭false
+     }
+     //@Test
+     public void testGetAdmins(){
+    	 List<Admin> admins=adminBean.getAdmins();
+    	 System.out.println(admins.size());//size()琛ㄧず闆嗗悎鐨勯暱搴�
+    	 for(Admin admin:admins){//寰幆闆嗗悎锛屾鏌dmin琛ㄤ腑鐨勬墍鏈夊垪鏄惁閮借祴鍊煎埌admin瀵硅薄涓簡
+    		 System.out.print(admin.getUserId()+"\t");
+    		 System.out.print(admin.getUsername()+"\t");
+    		 System.out.print(admin.getScreenName()+"\t");
+    		 System.out.print(admin.getPassword()+"\t");
+    		 System.out.print(admin.getCreatTime()+"\t");
+    		 System.out.println();
+    	 }
+     }
+    // @Test
+     public void testDeleAdmin(){
+    System.out.println(adminBean.deleteAdmin(25));
+    System.out.println(adminBean.deleteAdmin(1));
+       
+     }
+     @Test
+     public void testSaveAdmin(){
+    	 Admin admin=new Admin();
+    	 admin.setUsername("user13");
+    	 admin.setPassword("123");
+    	 admin.setScreenName("是的范收到德数萨");
+    	 System.out.println(adminBean.saveAdmin(admin));
+     }
+}

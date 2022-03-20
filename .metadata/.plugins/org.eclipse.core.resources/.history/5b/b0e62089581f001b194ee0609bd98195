@@ -1,0 +1,51 @@
+package com.lcvc.ebuy.bean;
+/*
+ *测试数据库的工具
+ */
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.mysql.jdbc.Connection;
+
+
+
+public class DBHelper {
+     //获取数据库Connection对象
+	 public static Connection  getConnection(){
+		 String driver="com.mysql.jdbc.Drider";//驱动类com.mysql.jdbc.Driver
+		 String url="jdbc:mysql://localhost:3306/lcvc_ebuy_data?characterEncoding=utf-8";
+		 String username="user";
+		 String password="123456";
+		 Connection conn=null;
+		 try{
+			 Class.forName(driver);
+			 conn=DriverManager(url,username,password);
+		 }catch(Exception e){
+			 e.printStackTrace();
+		 }
+		 return conn;
+	 }
+
+	 
+	 private static Connection DriverManager(String url, String username,
+			String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	//定义关闭数据库方法
+	 public static void closeConn(java.sql.Connection connection,PreparedStatement stmt,ResultSet rs) throws SQLException{
+		 if(rs!=null){
+			 rs.close();
+		 }
+		 if(stmt!=null){
+			 stmt.close();
+		 }
+		 if(connection!=null){
+			 connection.close();
+		 }
+	  }
+}

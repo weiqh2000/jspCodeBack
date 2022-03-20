@@ -1,0 +1,59 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="<%=basePath %>jsp/admin/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">首页</a></li>
+    <li><a href="<%=basePath%>admin/product/showproduct">管理员列表</a></li>
+    <li><a href="#">管理员编辑</a></li>
+    </ul>
+    </div>
+    
+    <div class="formbody">
+    
+    <div class="formtitle"><span>管理员编辑</span></div>
+    <form action="<%=basePath%>admin/product/doUpdateproduct" method="get">
+    <input name="userId" type="hidden" class="dfinput" value="${requestScope.admin.userId}"/>
+    <ul class="forminfo">
+    
+    <li><label>菜品id</label><input name="id" type="text" class="dfinput" value="${requestScope.product.id}"/><i></i></li>
+    <li><label>名字</label><input name="name" type="text" class="dfinput" value="${requestScope.product.name}"/><i></i></li>
+    <li><label>图片</label><input name="imageUrl" type="text" class="dfinput" value="${requestScope.product.imageUrl}"/><i></i></li>
+    <li><label>外部链接</label><input name="linkUrl" type="text" class="dfinput" value="${requestScope.product.linkUrl}"/><i></i></li>
+    <li><label>优先级</label><input name="intro" type="text" class="dfinput" value="${requestScope.product.intro}"/><i></i></li>
+    <li><label>产品数量</label><input name="orderNum" type="text" class="dfinput" value="${requestScope.product.orderNum}"/><i></i></li>
+    <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+    </ul>
+    </form>
+    
+    
+    </div>
+     <script type="text/javascript">
+	
+	//如果服务器返回信息，通过该函数显示
+	function alertMessage(){
+		var message="${requestScope.message}";
+		if(message!=''){
+			alert(message);
+		}
+	}
+	window.onload=function(){//每次页面 加载的时候，都首先读取message是否从服务端返回
+	 alertMessage();
+	}
+	</script>
+</body>
+</html>

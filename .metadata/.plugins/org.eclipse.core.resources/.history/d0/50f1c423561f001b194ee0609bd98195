@@ -1,0 +1,40 @@
+package tset;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.junit.Test;
+
+import com.sun.org.apache.bcel.internal.generic.Select;
+
+public class DBTest {
+      /**
+       * 测试数据库的连接
+       */
+	@Test
+	public void testConnection(){
+		try{
+			Class.forName("com.mysql.jdbc.Driver");//指明要连接mysql数据库，用到哪个驱动，mysql驱动规定的com.mysql.jdbc.Driver
+			//2.指明要访问的mysql数据库是哪个，用什么账户名和密码去连接这个数据库
+			Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/lcvc_test?characterEnconding=utf-8","user","123456");
+		    
+		    String sql="Select * from admin where username='user1' and password='123123'";//定义一个字符串"
+			PreparedStatement pstmt=connection.prepareStatement(sql);//这个对象可以用来将生气了语句发送到数据库（准备发送）
+		    ResultSet rs=pstmt.executeQuery();//pstmt.executeQuery()表示将sql语句真的发送到数据库，并且返回查询结果
+		    if (rs.next()) {//如果下一跳记录存在，那么游标就移动到下一条记录
+				System.out.println("登录成功");
+			}else{
+				System.out.println("登录失败");
+			}
+		    connection.close();//关闭数据库
+		    
+		}catch(ClassNotFoundException e){//catch表示如果出现了ClassNotFoundException异常，就执行括号内的代码
+			e.printStackTrace();
+		}catch(SQLException e){//catch表示如果出现了SQLException异常，就执行括号内的代码
+			e.printStackTrace();
+		}
+	}
+}

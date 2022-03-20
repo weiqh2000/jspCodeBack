@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="lcvc_ebuy"
+  id="myeclipse.1610265920451"
+  context-root="/lcvc_ebuy"
+  j2ee-spec="6.0"
+  archive="lcvc_ebuy.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

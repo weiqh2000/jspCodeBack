@@ -1,0 +1,64 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="<%=basePath%>jsp/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="<%=basePath  %>jsp/admin/js/jquery.js"></script> 
+</head>
+
+<body>
+
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">首页</a></li>
+    <li><a href="<%=basePath%>admin/adminmanage/productToAddAdmin">产品类别管理</a></li>
+    <li><a href="#">产品类别编辑</a></li>
+    </ul>
+    </div>
+    
+    <div class="formbody">
+    
+    <div class="formtitle"><span>产品类别编辑</span></div>
+    
+    <form action="<%=basePath %>admin/adminmanage/produitDoAddAdmin" method="get">
+    <input name="id" type="hidden" class="dfinput" value="${requestScope.producttype.id}"/>
+    <ul class="forminfo">
+    <li><label>*产品分类名称</label><input name="name" type="text" class="dfinput" value="${requestScope.producttype.name}"/></li>
+    <li><label>*图片</label><input name="imageUrl" type="text" class="dfinput"value="${requestScope.producttype.imageUrl}" />
+                           <input type="button" id="image1" class="dfinput" style="width:120px;" value="点我选择图片">
+                           <a href="#" id="clearImagePath1">清除选择图片路径</a>
+    </li>
+    <li><label>*优先级</label><input name="linkUrl" type="text" class="dfinput" value="${requestScope.producttype.linkUrl}"/></li>
+    <li><label>*外部链接地址</label><input name="intro" type="text" class="dfinput" value="${requestScope.producttype.intro}"/></li>
+    <li><label>*产品描述</label><textarea name="orderNum" cols="" rows="" class="textinput"></textarea></li>
+    <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="编辑产品类别"/></li>
+    </ul>
+    </form>
+    
+    </div>
+    
+     <script type="text/javascript">
+	
+	  //如果服务器返回信息，通过该函数显示
+	  function alertMessage(){
+	    var message="${requestScope.message}";
+	    if(message!=''){//如果服务器返回的信息不为空
+	      alert(message);
+	    }
+	  }
+	  
+	  window.onload=function(){//每次页面加载的时候，都首先读取message是否从服务器返回
+	    alertMessage();
+	  }
+	  
+	</script>
+</body>
+</html>

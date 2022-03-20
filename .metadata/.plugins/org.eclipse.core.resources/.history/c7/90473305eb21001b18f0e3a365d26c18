@@ -1,0 +1,50 @@
+package com.lcvc.ebuy.web.admin;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.lcvc.ebuy.bean.AdminBean;
+import com.lcvc.ebuy.model.Admin;
+
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
+	private AdminBean adminBean=new AdminBean();
+	/**
+	 * The doPost method of the servlet. <br>
+	 *
+	 * This method is called when a form has its tag value method equals to post.
+	 * 
+	 * @param request the request send by the client to the server
+	 * @param response the response send by the server to the client
+	 * @throws ServletException if an error occurred
+	 * @throws IOException if an error occurred
+	 */
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html");
+		response.setCharacterEncoding("UTF-8");
+        PrintWriter out=response.getWriter();
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		String username=request.getParameter("username");
+	    String password=request.getParameter("password");
+	    if(adminBean.login(username, password)){
+	        HttpSession session=request.getSession();
+	        Admin admin=adminBean.getAdmin(username);
+			session.setAttribute("user", adminBean.getAdmin(username));
+		    response.sendRedirect(basePath+"jsp/admin/main.html");
+		    }else{	
+		    	String url=basePath+"jsp/admin/login.jsp";
+		    	out.print("登录失败,<a href='"+url+"'>如果没有跳转，则手动跳转到登录页面</a>");
+		        response.sendRedirect(basePath+"jsp/admin/login.jsp");
+		    }
+	}
+}
+

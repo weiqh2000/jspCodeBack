@@ -1,0 +1,31 @@
+package tset;
+
+import java.util.List;
+
+import org.junit.Test;
+
+import com.lcvc.ebuy.bean.AdminBean;
+import com.lcvc.ebuy.model.Admin;
+
+public class AdminBeanTest {
+       private AdminBean adminBean=new AdminBean();
+       
+       @Test
+       public void testLogin(){
+    	   System.out.println(adminBean.login("user", "1234567"));//此处应该输出true
+    	   System.out.println(adminBean.login("user1", "123456"));//此处应该输出false
+       }
+       
+     @Test
+       public void testGetAdmin(){
+       List<Admin> admin=adminBean.getAdmin();
+   	   System.out.println(admin.size());//size()表示集合的长度
+  	   for(Admin admin1:admin){//循环集合，检查admin表中的所有列是否都赋值到admin对象中了
+   		   System.out.print(((Admin) admin).getUserId()+"\t");
+   		   System.out.print(((Admin) admin).getUsername()+"\t");
+    		   System.out.print(((Admin) admin).getScreeName()+"\t");
+    		   System.out.print(((Admin) admin).getPassword()+"\t");
+    		   System.out.println();
+    	   }
+       }
+}

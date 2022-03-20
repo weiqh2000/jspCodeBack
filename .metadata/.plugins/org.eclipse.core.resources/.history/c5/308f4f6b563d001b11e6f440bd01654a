@@ -1,0 +1,138 @@
+package Bean;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import model.Admin;
+import model.Producttype;
+/*
+ * 产品分类管理
+ * */
+public class ProductBean {
+	public List<Producttype> getProducts(){
+		List<Producttype> products=new ArrayList<Producttype>();
+		try{
+			Connection con=DBHelper.getConnection();
+			String sql="select * from producttype";
+			PreparedStatement pstmt=con.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()){
+				Producttype product=new Producttype(); //创建一个product对象，用于保存admin表中的一条记录
+				product.setId(rs.getInt("id"));
+				product.setName(rs.getString("name"));
+				product.setLinkUrl(rs.getString("linkUrl"));
+				product.setImageUrl(rs.getString("imageUrl"));
+				product.setIntro(rs.getString("intro"));
+				product.setOrderNum(rs.getInt("orderNum"));
+				products.add(product);
+			}
+			DBHelper.closeConnt(con, pstmt, rs);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
+	
+	public boolean deleteproduct(Integer id){
+		boolean status=false;//默认删除失败
+		try{
+			Connection con=DBHelper.getConnection();
+			String sql="delete from producttype where id=?";
+			PreparedStatement pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			int number=pstmt.executeUpdate();
+			if(number>0){
+				status=true;
+			}
+			DBHelper.closeConnt(con, pstmt, null);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
+
+public boolean saveProduct(Producttype product){
+	boolean status=false;//默认添加失败
+	try{
+		Connection connection=DBHelper.getConnection();
+		String sql="INSERT IGNORE INTO producttype VALUES (NULL,?,?,?,?,?)";
+		PreparedStatement pstmt=connection.prepareStatement(sql);//这个对象可以用来将sql语句发送到数据库
+		pstmt.setLong(1,product.getId());
+		pstmt.setString(2, product.getName());//默认初始密码123456
+		pstmt.setString(3,product.getImageUrl());
+		pstmt.setString(4,product.getLinkUrl());
+		pstmt.setString(5,product.getIntro());
+		pstmt.setLong(6,product.getOrderNum());
+		int numder=pstmt.executeUpdate();//数据库的增加、编辑、删除记录用executeUpdate()
+		if(numder>0){//如果添加成功
+			status=true;
+	}
+	DBHelper.closeConnt(connection, pstmt, null);
+}catch(SQLException e){
+	e.printStackTrace();
+}
+return status;
+}
+
+/*
+ * 根据账户的id，在数据库中查询处该账户的信息
+ * @param userId
+ * @return null表示找不到任何记录
+ * */
+public Producttype getproduct(Integer id){
+	Producttype product=null;//默认找不到任何记录，即null
+	try{
+		Connection connection=DBHelper.getConnection();
+		String sql="select * from producttype where id=?";
+		PreparedStatement pstmt=connection.prepareStatement(sql);//这个对象可以用来将sql语句发送到数据库
+		pstmt.setInt(1,id);
+		ResultSet rs=pstmt.executeQuery();//pstmt.executeQuery()表示将s.ql语句
+		while(rs.next()){//只要能找到下一条记录(行)
+			product=new Producttype();//创建一个admin对象，用于保存admin表中的一条记录
+			product.setId(rs.getInt( "Id"));
+			product.setName(rs.getString("name"));
+			product.setImageUrl(rs.getString( "imageUrl"));
+			product.setLinkUrl(rs.getString( "linkUrl"));
+			product.setIntro(rs.getString( "intro"));
+			product.setOrderNum(rs.getInt( "orderNum"));
+			
+	}
+		DBHelper.closeConnt(connection,pstmt, rs);//关闭数据库
+	}catch(SQLException e){//catch表示，如果出现了SQLException异常，就执行括号内的代码
+		e. printStackTrace();
+	}
+	return product;
+}
+
+
+/**
+ *保存信息到admin表，用于账户编辑
+ * @param admin
+ * @return true表示编辑成功，false表示编辑失败
+ */
+public boolean updateproduct(Producttype product){
+	boolean status=false;//默认编辑失败
+	try{
+		Connection connection=DBHelper.getConnection();
+		String sql="update producttype set name=?,imageUrl=?,intro=?,orderNum=? where id=?";
+		PreparedStatement pstmt=connection.prepareStatement(sql);//这个对象可以用来将sql语句发送到数据库
+		pstmt.setLong(1,product.getId());
+		pstmt.setString(2, product.getName());//默认初始密码123456
+		pstmt.setString(3,product.getImageUrl());
+		pstmt.setString(4,product.getIntro());
+		pstmt.setLong(5,product.getOrderNum());
+		int numder=pstmt.executeUpdate();//数据库的增加、编辑、删除记录用executeUpdate()
+		if(numder>0){//如果编辑成功
+			status=true;
+	}
+	DBHelper.closeConnt(connection, pstmt, null);
+}catch(SQLException e){
+	e.printStackTrace();
+}
+return status;
+}
+}

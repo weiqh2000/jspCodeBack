@@ -1,0 +1,50 @@
+package com.lcvc.ebuy.web.admin.adminmanage;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.lcvc.ebuy.bean.AdminBean;
+import com.lcvc.ebuy.model.Admin;
+
+/**
+ * 实现管理员列表的功能
+ * @author S6203-1-08
+ *
+ */
+@WebServlet("/admin/adminmanage/showAdmins")
+public class AdminManageServlet extends HttpServlet{
+   
+	public void doGet(HttpServletRequest request,HttpServletResponse response)
+	         throws ServletException,IOException{
+		//session传递管理员列表到页面
+		AdminBean adminBean=new AdminBean();
+		List<Admin> admin=adminBean.getAdmin();
+		request.setAttribute("admin", "admin");
+		String path=request.getContextPath();
+		String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";//获取路径
+		response.sendRedirect(basePath+"jsp/admin/adminmanage/adminmanage.jsp");
+	}
+}
+
+//@WebServlet("/admin/adminmanage/showAdmins")
+//public class AdminManageServlet extends HttpServlet{
+//
+//	public void doGet(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException{
+//				//session传递管理员列表到界面
+//				AdminBean adminBean = new AdminBean();
+//				List<Admin> admins = adminBean.getAdmins();
+//				request.setAttribute("admins", admins);
+//				request.getRequestDispatcher("/jsp/admin/adminmanage/admin.jsp").forward(request,response);
+//				
+//				
+//	}
+//	
+//	
+//}

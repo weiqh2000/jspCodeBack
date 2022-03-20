@@ -1,0 +1,56 @@
+package Bean;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+
+
+
+/*
+ * 数据库通用类
+ * */
+public final class DBHelper {
+	//获取数据库Connection对象
+	public static Connection getConnection(){
+		String driver="com.mysql.jdbc.Driver";
+		String url="jdbc:mysql://localhost:3306/admin?characterEncoding=utf-8";
+		String username="root";
+		String password="123456";
+		Connection connt=null;
+		try{
+			Class.forName(driver);
+			connt=DriverManager.getConnection(url,username,password);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return connt;
+	}
+	
+	//定义关闭数据库方法
+	public static void closeConnt(Connection connt,PreparedStatement stmt,ResultSet rs){
+		try{
+			if(rs !=null){
+				rs.close();
+			}if(stmt !=null){
+				stmt.close();
+			}if(connt !=null){
+				connt.close();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+//	public static void closeConnt(PreparedStatement stmt,ResultSet rs){
+//		try{
+//			if(rs !=null){
+//				rs.close();
+//			}if(stmt !=null){
+//				stmt.close();
+//			}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//	}
+}

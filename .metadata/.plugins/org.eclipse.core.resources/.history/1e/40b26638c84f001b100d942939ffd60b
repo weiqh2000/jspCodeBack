@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8" isErrorPage="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<% 
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="<%=basePath %>jsp/admin/css/style.css" rel="stylesheet" type="text/css" />
+<script language="javaScript" src="<%=basePath%>jsp/admin/js/jquery.js"></script>
+<!-- 导入kindEditor所需插件 -->
+<script language="javaScript" src="<%=basePath%>jsp/admin/js/jquery.js"></script>
+<link rel="stylesheet" href="<%=basePath%>plugins/kindeditor-4.1.10/themes/default/default.css" />
+<script src="<%=basePath%>plugins/kindeditor-4.1.10/kindeditor.js"></script>
+<script src="<%=basePath%>plugins/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<!-- 导入代码高亮的css样式，kindeditor需要导入 -->
+<link rel="stylesheet" type="text/css" href="<%=basePath%>plugins/kindeditor-4.1.10/plugins/code/prettify.css" />
+<script type="text/javascript" src="<%=basePath%>plugins/kindeditor-4.1.10/plugins/code/prettify.js"></script>
+<script>
+KindEditor.ready(function(K) {		//KindEditor使用的起手式，相当于搭建运行环境
+			var editor = K.editor({	//定义图片上传插件 
+				//指定上传文件的服务器端程序
+				uploadJson : '<%=basePath%>plugins/kindeditor-4.1.10/jsp/upload_json.jsp',
+				//指定浏览远程图片的服务器端程序
+				fileManagerJson : '<%=basePath%>plugins/kindeditor-4.1.10/jsp/file_manager_json.jsp',
+				allowFileManager : true	//允许图片管理
+			});
+			K('#image_button').click(function() {
+				editor.loadPlugin('image', function() {//动态加载插件，image为插件名
+					editor.plugin.imageDialog({						 
+					    showLocal : true,//是否显示本地图片上传窗口
+					    showRemote : true,//是否显示网络图片窗口	
+					    fillDescAfterUploadImage:false,//个人建议只在文本编辑器中使用true，true时图片上传成功后切换到图片编辑标签，false时插入图片后关闭弹出框。					 
+						clickFn : function(url, title, width, height, border, align) {							   
+							K('#url').val(url);
+							editor.hideDialog();
+						}
+					}); 
+				});
+			});
+		});
+</script>
+</head>
+
+<body>
+
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">首页</a></li>
+    <li><a href="<%=basePath%>admin/productType/productTypeShow">产品分类管理</a></li>
+    <li><a href="#">添加产品分类</a></li>
+    </ul>
+    </div>
+    
+    <div class="formbody">
+    
+    <div class="formtitle"><span>基本信息</span></div>
+    
+    <form method="get" action="<%=basePath%>admin/productType/productTypeDoAdd">
+    <ul class="forminfo">
+    <li><label>分类名</label><input name="name" type="text" class="dfinput" /></li>
+    <li><label>外部链接</label><input name="linkUrl" type="text" class="dfinput" /></li>
+    <li><label>图片</label><input id="url" name="imageUrl" type="text" class="dfinput"  /><input name="" id="image_button" type="button" class="dfinput" style="width:120px;height:30px; margin-left:3px;" value="上传图片" /> </li>
+     <li><label>优先级</label><input name="orderNum" type="text" class="dfinput" /></li>
+    <li><label>备注</label><textarea name="intro" cols="" rows="" class="textinput"></textarea></li>
+    <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+    </ul>
+    </form>
+    
+    </div>
+        <script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+	
+	 function deleteProductType(id){
+	 if(confirm("确认删除吗？删除后无法恢复")){
+	 		var url="<%=basePath%>admin/productType/deleteProductType?id="+id;
+	 		location.href=url;
+	 	}
+	 }
+	 	
+	 function alertMessage(){
+	 	var message="${requestScope.message}";
+	 	if(message!=''){
+	 	alert(message);
+	 	}
+	 }
+	 window.onload=function(){
+	 alertMessage();
+	 }
+	 
+	 function alertmess(){
+           var mess="${requestScope.mess}";
+           if(mess!=""){
+              alert(mess);
+           }
+        }
+         $(document).ready(function(){
+	        alertmess();
+	     })
+	 
+	</script>
+</body>
+</html>

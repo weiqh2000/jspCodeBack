@@ -1,0 +1,45 @@
+package com.lcvc.ebuy.bean;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ * 数据库通用
+ * @author S6203-1-08
+ *
+ */
+public class DBHelper {
+       //获取数据库Connection对象
+	public static Connection getConnection(){
+		String driver="com.mysql.jdbc.Driver";
+		String url="jdbc:mysql://localhost:3306/com_ebuy?charcterEncoding=utf-8";
+		String username="user";
+		String password="123456";
+		Connection conn=null;
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url,username,password);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return conn;
+	}
+	//定义关闭数据库方法
+	public static void closeConn(Connection conn,PreparedStatement stmt,ResultSet rs){
+	try{
+		if (rs !=null){
+			rs.close();
+		}
+		if(stmt !=null){
+			stmt.close();
+		}
+	    if(conn !=null){
+	    	conn.close();
+	    }
+	} catch (Exception e){
+		e.printStackTrace();
+	}
+}
+}

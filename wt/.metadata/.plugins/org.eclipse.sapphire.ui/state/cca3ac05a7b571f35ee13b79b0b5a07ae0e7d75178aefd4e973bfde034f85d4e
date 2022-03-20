@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<master-details-editor-page-state>
+    <content-outline>
+        <ratio>0.2997159090909091</ratio>
+        <visible>true</visible>
+        <root>
+            <node>
+                <label>JNDI Environment References</label>
+                <selected>true</selected>
+            </node>
+        </root>
+    </content-outline>
+</master-details-editor-page-state>

@@ -1,0 +1,129 @@
+package com.lcvc.ebuy.bean;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.lcvc.ebuy.model.Admin;
+
+public class AdminBean {
+     /**
+      * 处理管理账户登录
+      * @param username 账户名
+      * @param password 密码
+      * @return true表示登录成功，false表示登录失败
+      */
+	
+	public static boolean login(String username,String password) {
+		boolean result=false;//默认失败
+		try{
+			Connection connection = DBHelper.getConnection();
+			Class.forName("com.mysql.jdbc.Driver");//指明要连接mysql数据库，用到哪个驱动，mysql驱动规定的com.mysql.jdbc.Driver
+			//2.指明要访问的mysql数据库是哪个，用什么账户名和密码去连接这个数据库
+			Connection connection1=DriverManager.getConnection("jdbc:mysql://localhost:3306/lcvc_test?characterEnconding=utf-8","user","123456");
+		    String sql="Select * from admin where username='"+username+"' and password='"+password+"'";//定义一个字符串"
+			PreparedStatement pstmt=connection1.prepareStatement(sql);//这个对象可以用来将生气了语句发送到数据库（准备发送）
+		    ResultSet rs=pstmt.executeQuery();//pstmt.executeQuery()表示将sql语句真的发送到数据库，并且返回查询结果
+		    if (rs.next()) {//如果下一跳记录存在，那么游标就移动到下一条记录
+		    	result=true;
+			}																										
+		    connection1.close();//关闭数据库
+		    
+		}catch(ClassNotFoundException e){//catch表示如果出现了ClassNotFoundException异常，就执行括号内的代码
+			e.printStackTrace();
+		}catch(SQLException e){//catch表示如果出现了SQLException异常，就执行括号内的代码
+			e.printStackTrace();
+		}
+	   return result;
+}
+	
+	/**
+	 * 根据账户读取指定的账户信息
+	 * @param username
+	 * @return null表示找不到相关的记录
+	 */
+	
+	public Admin getAdmin(String username,String password){
+		Admin admin=null;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");//指明要连接mysql数据库，用到哪个驱动，mysql驱动规定的com.mysql.jdbc.Driver
+			//2.指明要访问的mysql数据库是哪个，用什么账户名和密码去连接这个数据库
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         		Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/lcvc_test?characterEnconding=utf-8","user","123456");
+		    String sql="Select * from admin where username=? and password=? ";//定义一个字符串"
+			PreparedStatement pstmt=connection.prepareStatement(sql);//这个对象可以用来将生气了语句发送到数据库（准备发送）
+			pstmt.setString(1,username);
+			pstmt.setString(2,password);
+		    ResultSet rs=pstmt.executeQuery();//pstmt.executeQuery()表示将sql语句真的发送到数据库，并且返回查询结果
+		    if (rs.next()) {//如果能找到下一条记录(行)
+			admin=new Admin();
+			admin.setUserId(rs.getInt("UserId"));
+			admin.setUsername(rs.getString("Username"));
+			admin.setPassword(rs.getString("Password"));
+			admin.setScreeName(rs.getString("ScreenName"));
+			//admin.setCreateTime(new Date());//new Date();表示当前时间
+		}
+        connection.close();//关闭数据库
+		    
+		}catch(ClassNotFoundException e){//catch表示如果出现了ClassNotFoundException异常，就执行括号内的代码
+			e.printStackTrace();
+		}catch(SQLException e){//catch表示如果出现了SQLException异常，就执行括号内的代码
+			e.printStackTrace();
+		}
+		return admin;
+	}
+	/**
+	 * 从数据库中读取admin中的所有数据
+	 * @热土热返回从admin表中找到的所有记录
+	 */
+//	public List<Admin> getAdmin(){
+//		List<Admin> admin=new ArrayList<Admin>();//定义一个list（有序list，无序set）集合
+//		try{
+//			Connection connection=DBHelper.getConnection();
+//			String sql="select * from admin";
+//			PreparedStatement pstmt=connection.prepareStatement(sql);//这个对象可以用来将sql语句发送到数据库（准备发送）
+//			ResultSet rs=pstmt.executeQuery();
+//			while(rs.next()){//只要能找到下一条记录（行）
+//				Admin admin1=new Admin();//创建一个admin对象，用于保存admin表中的一条记录
+//				admin1.setUsername(rs.getString("username"));
+//				admin1.setPassword(rs.getString("password"));
+//				admin1.setScreeName(rs.getString("screeName"));
+//				admin1.setUserId(rs.getInt("userId"));
+//				Admin.add(admin1);
+//			}
+//			DBHelper.closeConn(connection, pstmt, rs);//关闭数据库
+//		}catch(SQLException e){//catch表示如果出现SQLException异常就执行括号内的代码
+//			e.printStackTrace();
+//		}
+//		return admin;
+//	}
+	
+	
+	public List<Admin> getAdmins(){
+		//定义一个List集合
+		List<Admin> admins = new ArrayList<Admin>(); 
+		try {
+			Connection connection = DBHelper.getConnection();
+			String sql = "select * from admin";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()){
+				Admin admin=new Admin();
+				admin.setUsername(rs.getString("username"));
+				admin.setPassword(rs.getString("userpass"));
+				admin.setScreeName(rs.getString("screenName"));
+				admin.setUserId(rs.getInt("userId"));
+				//admin.setCreateTime(new Date());
+				admins.add(admin);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return admins;
+	}
+	
+}

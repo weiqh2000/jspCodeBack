@@ -1,0 +1,97 @@
+package com.lcvc.ebuy.bean;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+
+import com.lcvc.ebuy.model.Admin;
+/*
+ * AdminBean,用来处理业务方法
+ */
+
+public class AdminBean {
+
+//	public boolean login(String username, String userpass){
+//		boolean reault = false;
+//		if(username.equals("admin") && userpass.equals("123456")){
+//			reault = true;
+//		}
+//		return reault;
+//	}
+//	
+//	public Admin getAdmin(String username){
+//		Admin admin = null;
+//		if(username.equals("adin")){
+//			admin = new Admin();
+//			admin.setUserId(1);
+//			admin.setUsername("admin");
+//			admin.setUserpass("123456");
+//			admin.setScreenName("韦佗");
+//			admin.setCreateTime(new Date());
+//		}
+//		return admin;
+//	}
+	
+	/**
+	 * 处理管理账户登录
+	 * @param username 账户名
+	 * @param password 密码
+	 * @return true表示登陆成功，false表示登陆失败
+	 * **/
+	public boolean login(String username,String password){
+		boolean result=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");		//1、指明要连接MySQL数据库，用到哪个驱动，MySQL驱动规定的com.mysql.jdbc.Dryver
+														//2、指明要访问的MySQL数据库是哪个。用什么账户名和密码去连接这个数据库
+			Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/zmm?characterEncoding=utf-8","user","123456");//连接数据库的路径
+			String sql="select * from admin where username='"+username+"' and userpass='"+password+"'";							//定义一个字符串
+			PreparedStatement pstmt=connection.prepareStatement(sql);	//这个对象可以用来将sql语句发送到数据库（准备发送）
+			ResultSet rs=pstmt.executeQuery();					//pstmt.executeQuery()表示将sql语句真的发送到数据库，并返回查询结果
+			if(rs.next()){
+				result=true;
+			}
+			connection.close();								//关闭数据库
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+		}
+		
+		return result;
+	}
+	/**
+	 * 根据账户名获取相应的Admin对象(模拟从数据库读取)
+	 * @param username
+	 * @return null表示没有找到
+	 * */
+	public Admin getAdmin(String username){
+		Admin admin=null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");		//1、指明要连接MySQL数据库，用到哪个驱动，MySQL驱动规定的com.mysql.jdbc.Dryver
+														//2、指明要访问的MySQL数据库是哪个。用什么账户名和密码去连接这个数据库
+			Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/zmm?characterEncoding=utf-8","user","123456");//连接数据库的路径
+			String sql="select * from admin where username='"+username+"'";							//定义一个字符串
+			PreparedStatement pstmt=connection.prepareStatement(sql);	//这个对象可以用来将sql语句发送到数据库（准备发送）
+			ResultSet rs=pstmt.executeQuery();					//pstmt.executeQuery()表示将sql语句真的发送到数据库，并返回查询结果
+			if(rs.next()){
+				admin=new Admin();
+				admin.setUsername(rs.getString("username"));
+				admin.setUserpass(rs.getString("userpass"));
+				admin.setScreenName(rs.getString("screenName"));
+				admin.setUserId(rs.getInt("userId"));
+				//admin.setCreateTime(new Date());
+			}
+			connection.close();								//关闭数据库
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		
+		return admin;
+	}
+	
+}

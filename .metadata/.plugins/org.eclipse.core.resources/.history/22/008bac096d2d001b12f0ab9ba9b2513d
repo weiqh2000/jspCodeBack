@@ -1,0 +1,48 @@
+package com.lcvc.ebuy.web.adminmanage;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.lcvc.ebuy.bean.AdminBean;
+import com.lcvc.ebuy.model.Admin;
+
+/**
+ * 将管理账户添加页面中表单的数据库存入数据库
+ * @author 86176
+ *
+ */
+@WebServlet("/admin/adminmanage/doAddAdmin")
+public class AdminDoAddServlet  extends HttpServlet{
+   @Override
+   protected void service(HttpServletRequest request,HttpServletResponse response)
+		   throws ServletException, IOException{
+	   //获取表单的数据：账户名和姓名
+	   response.setContentType("text/html");
+	   response.setCharacterEncoding("UTF-8");
+	   request.setCharacterEncoding("UTF-8");
+	   String  username=request.getParameter("username");
+	   String screenName=request.getParameter("screenName");
+	   //存入数据库
+	   AdminBean adminBean=new AdminBean();
+	   //将页面传递过来的值按照javabean中的函数的参数类型进行封装
+	   Admin admin=new Admin();
+	   admin.setUsername(username);
+	   admin.setScreenName(screenName);
+	   if(username.trim().equals("")){
+		   request.setAttribute("message", "操作失败：账户名不能为空");
+	   }else if(screenName.trim().equals("")){
+		   request.setAttribute("message", "操作失败:姓名不能为空");
+	   }else if(adminBean.saveAdmin(admin)){//如果添加成功
+		   request.setAttribute("message", "操作成功");
+	   }else{//如果添加失败
+		   request.setAttribute("message", "操作失败：无法保存到数据库");
+	   }
+	   //跳转到管理员添加页面
+	   request.getRequestDispatcher("/jsp/admin/adminmanage/adminadd.jsp").forward(request, response);
+}
+}
